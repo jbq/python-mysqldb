@@ -1,0 +1,16 @@
+Description: fix set2str
+Author: Simeon Anastasov <simeon.anastasov@gmail.com>
+Last-Update: 2007-05-24
+
+--- a/MySQLdb/converters.py
++++ b/MySQLdb/converters.py
+@@ -46,7 +46,8 @@
+ def Bool2Str(s, d): return str(int(s))
+ 
+ def Str2Set(s):
+-    return set([ i for i in s.split(',') if i ])
++    values = s.split(',')
++    return map(str, tuple(values))
+ 
+ def Set2Str(s, d):
+     return string_literal(','.join(s), d)

@@ -1,0 +1,45 @@
+Source: python-mysqldb
+Section: python
+Priority: optional
+Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Uploaders: Jonas Meurer <mejo@debian.org>, Monty Taylor <monty@inaugust.com>
+Build-Depends: debhelper (>= 6.0.0), python-all-dev (>= 2.6.6-3~),
+               python-all-dbg, libmysqlclient-dev, zlib1g-dev,
+               python-setuptools
+Vcs-Svn: svn://svn.debian.org/python-modules/packages/python-mysqldb/trunk/
+Vcs-Browser: http://svn.debian.org/viewsvn/python-modules/packages/python-mysqldb/trunk/
+Standards-Version: 3.9.2
+Homepage: http://mysql-python.sourceforge.net/
+
+Package: python-mysqldb
+Architecture: any
+Depends: ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}
+Suggests: python-egenix-mxdatetime, mysql-server-5.1 | mysql-server, python-mysqldb-dbg
+Conflicts: python2.3-mysqldb, python2.4-mysqldb
+Replaces: python2.3-mysqldb, python2.4-mysqldb
+Provides: ${python:Provides}
+XB-Python-Version: ${python:Versions}
+Description: Python interface to MySQL
+ MySQLdb is an interface to the popular MySQL database server for
+ Python. The design goals are:
+ .
+  + Compliance with Python database API version 2.0
+  + Thread-safety
+  + Thread-friendliness (threads will not block each other)
+  + Compatibility with MySQL-3.23 and later
+ . 
+ This package contains modules for all Python versions supported in Debian.
+
+Package: python-mysqldb-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Depends: python-mysqldb (= ${binary:Version}), python-dbg, ${shlibs:Depends}, ${misc:Depends}
+Suggests: python-egenix-mxdatetime-dbg
+Description: Python interface to MySQL (debug extension)
+ MySQLdb is an interface to the popular MySQL database server for
+ Python.
+ .
+ This package contains modules for all Python versions supported in
+ Debian built for Python debug interpreter.
+

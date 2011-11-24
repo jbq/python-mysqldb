@@ -1,0 +1,590 @@
+python-mysqldb (1.2.3-1build1) precise; urgency=low
+
+  * Rebuild for libmysqlclient transition
+
+ -- Clint Byrum <clint@ubuntu.com>  Thu, 24 Nov 2011 00:06:23 -0800
+
+python-mysqldb (1.2.3-1) unstable; urgency=low
+
+  * Merge with package from Ubuntu, thanks to Mario Limonciello.
+    (closes: #609906)
+  * Migrate to new source format "3.0 (quilt)":
+    - Migrate patches from dpatch to quilt, drop Build-Depends on dpatch.
+    - Add debian/source/format.
+  * Bump standards-version to 3.9.2, no changes required.
+  * Migrate from dh_pysupport to dh_python2:
+    - Remove Build-Depends on python-support.
+    - Bump minimal Build-Depends on python to (>= 2.6.6-3~).
+    - Remove XS-Python-Version header from debian/control.
+    - Remove obsolete python magic from debian/rules.
+
+ -- Jonas Meurer <mejo@debian.org>  Tue, 18 Oct 2011 12:45:53 +0200
+
+python-mysqldb (1.2.3-0ubuntu1) oneiric; urgency=low
+
+  * New upstream version. (Closes: #609906)
+  * Drop 02_python_2.6, applied upstream.
+  * Drop 04_disable_ez_setup.dpatch, applied upstream.
+  * Drop 05_null-connection-guard.dpatch per upstream recommendation.
+  * Drop 06_mysql_connect_port.dpatch, applied upstream.
+  * debian/rules: Don't install upstream changelog (not in package anymore).
+
+ -- Mario Limonciello <Mario_Limonciello@Dell.com>  Thu, 14 Jul 2011 01:41:37 -0500
+
+python-mysqldb (1.2.2-10build2) natty; urgency=low
+
+  * Rebuild to add support for python 2.7.
+
+ -- Matthias Klose <doko@ubuntu.com>  Fri, 03 Dec 2010 00:11:26 +0000
+
+python-mysqldb (1.2.2-10build1) lucid; urgency=low
+
+  * Rebuild dropping the extension for python2.5.
+
+ -- Matthias Klose <doko@ubuntu.com>  Mon, 01 Feb 2010 22:05:30 +0000
+
+python-mysqldb (1.2.2-10) unstable; urgency=low
+
+  [ Jonas Meurer ]
+  * fix 02_python_2.6.dpatch to use set insteat of Set in conversions{}.
+    thanks to Chris Lamp for the bugreport. (closes: #543667)
+
+  [ Bernd Zeimetz ]
+  * Removing myself from uploaders.
+  * Use py_setup_install_args from /usr/share/python/python.mk 
+
+ -- Jonas Meurer <mejo@debian.org>  Thu, 27 Aug 2009 17:12:05 +0200
+
+python-mysqldb (1.2.2-9) unstable; urgency=low
+
+  * Add 02_python_2.6.dpatch to fix python 2.6 related warnings. Thanks to
+    Mario Limonciello <superm1@ubuntu.com> for the patch. (closes: #541719)
+  * bump standards-version to 3.8.3, no changes required.
+
+ -- Jonas Meurer <mejo@debian.org>  Wed, 26 Aug 2009 01:50:35 +0200
+
+python-mysqldb (1.2.2-8) unstable; urgency=low
+
+  [ Sandro Tosi ]
+  * debian/control
+    - switch Vcs-Browser field to viewsvn
+
+  [ Raphael Hertzog ]
+  * Remove myself from Uploaders.
+
+  [ Jonas Meurer ]
+  * bump standards-version to 3.8.2:
+    - add debian/README.source
+    - change section of python-mysqldb-dbg to debug
+  * bump build-depends from libmysqlclient15-dev to libmysqlclient-dev
+  * bump debhelper build-depends and debian/compat to 6
+  * remove postinst which removed ancient python1.5 leftovers
+  * update debian/copyright to point to GPL-2
+  * move README.source to debian/
+  * remove obsolete lintian-overrides for python-mysqldb-dbg
+  * improve long descriptions of python-mysqldb and python-mysqldb-dbg
+
+ -- Jonas Meurer <mejo@debian.org>  Wed, 05 Aug 2009 15:00:08 +0200
+
+python-mysqldb (1.2.2-7) unstable; urgency=low
+
+  [ Sandro Tosi ]
+  * debian/control
+    - list items lines in description starts with 2 space, to avoid reformat
+      on webpages (Closes: #480341)
+
+  [ Bernd Zeimetz ]
+  * debian/patches/02_reconnect.dpatch:
+    - Dropping patch:
+      Comment in Storm which explains the problem:
+
+        # Here is another sad story about bad transactional behavior. MySQL
+        # offers a feature to automatically reconnect dropped connections.
+        # What sounds like a dream, is actually a nightmare for anyone who
+        # is dealing with transactions. When a reconnection happens, the
+        # currently running transaction is transparently rolled back, and
+        # everything that was being done is lost, without notice. Not only
+        # that, but the connection may be put back in AUTOCOMMIT mode, even
+        # when that's not the default MySQLdb behavior. The MySQL developers
+        # quickly understood that this is a terrible idea, and removed the
+        # behavior in MySQL 5.0.3. Unfortunately, Debian and Ubuntu still
+        # have a patch right now which *reenables* that behavior by default
+        # even past version 5.0.3.
+
+ -- Bernd Zeimetz <bzed@debian.org>  Mon, 16 Jun 2008 20:03:09 +0200
+
+python-mysqldb (1.2.2-6) unstable; urgency=low
+
+  [ Sandro Tosi ]
+  * debian/control
+    - uniforming Vcs-Browser field
+
+  [ Monty Taylor ]
+  * Added patch to allow setting the port in my.cnf or ~/.my.cnf to actually
+    work.
+  * Added myself to Uploaders.
+
+  [ Bernd Zeimetz ]
+  * debian/control:
+    - Updating my email address.
+
+  [ Jonas Meurer ]
+  * Several minor fixes thanks to lintian warnings:
+    - Update standards-version to 3.7.3 (no changes needed).
+    - Change build-depends on libmysqlclient15-dev (>= 5.0.26-1) to >= 5.0.26
+      to make live easier for backporters
+    - Capitalize Python in the long description of python-mysqldb-dbg
+    - Add lintian override file for 'package-contains-empty-directory
+      usr/share/python-support/python-mysqldb-dbg/', python-support relies on
+      this directory.
+    - Actually mention Copyright and the © symbol in debian/copyright.
+  * debian/rules:
+    install target should depend on build-stamp instead of build. This way,
+    the build target is only executed once.
+
+ -- Jonas Meurer <mejo@debian.org>  Wed, 19 Mar 2008 01:34:10 +0100
+
+python-mysqldb (1.2.2-5) unstable; urgency=low
+
+  [ Piotr Ożarowski ]
+  * Rename XS-Vcs-Svn field to Vcs-Svn (dpkg supports it now)
+  * Add Vcs-Browser field
+
+  [ Bernd Zeimetz ]
+  * debian/patches:
+    - Adding 05_null-connection-guard.dpatch, providing an interface to set
+      MYSQL_OPT_RECONNECT
+    - Adding 00dpatch.conf to make the handling of dpatches more easy
+  * debian/control
+    - Adding myself as uploader
+    - Adding Homepage field
+    - Replacing the depricated ${Source-Version} by ${binary:Version} in the
+      dependency list of python-mysqldb-dbg 
+
+ -- Bernd Zeimetz <bernd@bzed.de>  Sun, 14 Oct 2007 12:15:09 +0200
+
+python-mysqldb (1.2.2-4) unstable; urgency=low
+
+   [ Scott Kitterman ]
+  * Update debian/control and debian/rules to build python-dbg package
+
+   [ Piotr Ozarowski ]
+  * debian/watch file updated
+  * add 04_disable_ez_setup patch (closes: #431552)
+
+  [ Jonas Meurer ]
+  * upload to unstable
+
+ -- Jonas Meurer <mejo@debian.org>  Fri, 10 Aug 2007 15:15:10 +0200
+
+python-mysqldb (1.2.2-3) unstable; urgency=low
+
+  * Build-Depend on python-setuptools, thanks to Michael Ablassmeier
+    <abi@grinser.de>. (closes: #422665)
+
+ -- Jonas Meurer <mejo@debian.org>  Tue, 08 May 2007 04:01:09 +0200
+
+python-mysqldb (1.2.2-2) unstable; urgency=low
+
+  * Move to python-support
+  * Bump versoned Build-Depend on python-all-dev to (>= 2.4.4-3) for
+    enabling extensions for python2.5. (closes: #409814)
+
+ -- Jonas Meurer <mejo@debian.org>  Wed, 02 May 2007 01:33:54 +0200
+
+python-mysqldb (1.2.2-1) unstable; urgency=low
+
+  * new upstream stable release 1.2.2
+    - fixes crash with unicode chars (closes: #406956)
+    - update patches accordingly
+  * bump mysql version in debian rules to 5.0.38
+  * update copyright file: change "program" to "package", and mention GPL
+    version 2, not version 2.1 which is not available on debian systems.
+    thanks to Marko Randjelovic <marel@sbb.co.yu> (closes: #417964)
+  * remove dh_python call from debian/rules
+
+ -- Jonas Meurer <mejo@debian.org>  Sun, 22 Apr 2007 21:16:28 +0200
+
+python-mysqldb (1.2.2~b2-1) unstable; urgency=medium
+
+   [ Jonas Meurer ]
+  * yet another beta, updated debian patches
+  * bump minimal mysql version in package description to 3.23
+  * bump versioned build-depends on libmysqlclient15-dev to >= 5.0.26-1
+  * don't apply patch 03_converters_set2str. breaks too much and only one
+    person reported problems without the patch. (closes: 394999)
+  * don't install a ChangeLog file, as no one exists.
+
+   [ Piotr Ozarowski ]
+  * Added XS-Vcs-Svn field
+
+ -- Jonas Meurer <mejo@debian.org>  Sat, 25 Nov 2006 13:02:21 +0100
+ 
+python-mysqldb (1.2.2~b1-1) unstable; urgency=low
+
+  * new upstream beta release
+  * adjust patches 01 and 02 for new beta
+
+ -- Jonas Meurer <mejo@debian.org>  Wed,  6 Sep 2006 05:30:45 +0200
+
+python-mysqldb (1.2.1-p2-4) unstable; urgency=HIGH
+
+  [ Jonas Meurer ]
+  * bump build-depends on libmysqlclient-dev to >= 5.0.24-2. the abi changes
+    introduced in mysql 5.0.24-1 are reverted now. I would highly appreciate
+    coordination by the mysql maintainers in such a case.
+  * urgency set to high due to this fact.
+  * bump build-depends on python-central to >= 0.5 to make lintian happy.
+
+ -- Jonas Meurer <mejo@debian.org>  Fri, 18 Aug 2006 15:44:04 +0200
+
+python-mysqldb (1.2.1-p2-3) unstable; urgency=low
+
+  [ Jonas Meurer ]
+  * bump mysqlversion to 5.0.24, tighten build-depends on libmysqlclient-dev
+    to >= 5.0.24-1. unfortunately, the abi changes where not documented.
+    (closes: #383603)
+  * move DH_COMPAT to debian/compat
+  * add FAQ.txt to dh_installdoc
+  * add 03_converters_set2str.dpatch, fixes handling of MySQL SETs,
+    thanks to Simeon Anastasov <simeon@know-it.net> for the patch.
+  * remove -a from all dh_* calls in debian/rules. there is only one package
+    left anyway, so there is no need for the arch-dependent option.
+
+ -- Jonas Meurer <mejo@debian.org>  Fri, 18 Aug 2006 13:53:07 +0200
+
+python-mysqldb (1.2.1-p2-2) unstable; urgency=low
+
+  * Updated for the new python policy. Closes: #373329
+  * Udpdated Standards-Version to 3.7.2.
+
+ -- Raphael Hertzog <hertzog@debian.org>  Fri, 23 Jun 2006 22:45:25 +0200
+
+python-mysqldb (1.2.1-p2-1) unstable; urgency=low
+
+  [ Jonas Meurer ]
+  * new upstream release (closes: #301419)
+    - update patches
+  * bump mysqlversion in debian/rules to 5.0.19
+  * set the maintainer to the debian python modules team
+  * relax dependency of python-mysqldb on python2.3-mysqldb
+    (closes: #361940, #358747)
+
+ -- Jonas Meurer <mejo@debian.org>  Wed, 12 Apr 2006 19:10:00 +0200
+
+python-mysqldb (1.2.1c3-6) unstable; urgency=low
+
+  * reconnect to lost connections even with mysql 5.x,
+    thanks to Dan Pascu <dan@ag-projects.com> for the patch.
+
+ -- Jonas Meurer <mejo@debian.org>  Tue, 24 Jan 2006 13:24:21 +0100
+
+python-mysqldb (1.2.1c3-5) unstable; urgency=low
+
+  * rebuild against 5.0.16-1 (closes: #343802)
+  * set mysqlversion=5.0.16
+  * drop python2.2-mysqldb packages, as zope-mysqlda as last reverse
+    depend got removed from the archive
+
+ -- Jonas Meurer <mejo@debian.org>  Sun, 18 Dec 2005 18:53:02 +0100
+
+python-mysqldb (1.2.1c3-4) unstable; urgency=low
+
+  * set mysqlversion=4.1.14 according to the version of mysql libs
+    we use to build
+
+ -- Jonas Meurer <mejo@debian.org>  Wed, 26 Oct 2005 17:57:47 +0200
+
+python-mysqldb (1.2.1c3-3) unstable; urgency=low
+
+  * rebuild against latest libmysqlclient14 with versioned symbols.
+    this fixes one half of the segfaults when python-mysqldb is used
+    by mod_python in apache with php4-mysql used by the same apache
+    at the same time. the other half has already been fixed by a new
+    php4 upload, also rebuilt against libmysqlclient14 with versioned
+    symbols. (closes: #333117)
+
+ -- Jonas Meurer <mejo@debian.org>  Wed, 26 Oct 2005 17:31:45 +0200
+
+python-mysqldb (1.2.1c3-2) unstable; urgency=low
+
+  * rebuild against mysql 4.1 (closes: #329753)
+  * remove patches/02_mysql_41: unused, obsolete
+  * bump standards-version to 3.6.2
+  * update fsf address
+
+ -- Jonas Meurer <mejo@debian.org>  Mon, 26 Sep 2005 00:32:22 +0200
+
+python-mysqldb (1.2.1c3-1) unstable; urgency=low
+
+  * new upstream pre-release
+
+ -- Jonas Meurer <mejo@debian.org>  Sat,  4 Jun 2005 03:12:12 +0200
+
+python-mysqldb (1.2.1c2-1) unstable; urgency=high
+
+  * new upstream release
+  * readd python 2.2 support to make zope-mysqlda happy again
+  * remove README.Debian, debian/python-mysqldb.doc-base:
+    this version doesn't ship any documentation except MySQLdb.txt
+  * urgency high to push fix for #306906 into sarge
+
+ -- Jonas Meurer <mejo@debian.org>  Sun,  1 May 2005 17:53:26 +0200
+
+python-mysqldb (1.2.0-4) unstable; urgency=low
+
+  * rebuild with sources included 
+
+ -- Jonas Meurer <mejo@debian.org>  Sat, 26 Mar 2005 16:48:30 +0100
+
+python-mysqldb (1.2.0-3) unstable; urgency=low
+
+  * python2.4 packages are built (closes: #301402)
+  * remind scripts to ack NMU (closes: #299168, #297472)
+
+ -- Jonas Meurer <mejo@debian.org>  Sat, 26 Mar 2005 02:29:33 +0100
+
+python-mysqldb (1.2.0-2) unstable; urgency=low
+
+  * fix bool convertion: patches/01_converters_boolean
+    - take boolean vars into account (closes: #300324)
+    - reintroduced dpatch in build scripts
+  * add build support for mysql 4.1: patches/02_mysql_41
+    - simply enable in patches/00list to build packages
+      with libmysqlclient14-dev from mysql-dfsg-4.1
+    - disabled by default to prevent segfaults if
+      used with mysql 4.0 libraries.
+
+ -- Jonas Meurer <mejo@debian.org>  Fri, 25 Mar 2005 17:06:52 +0100
+
+python-mysqldb (1.2.0-1) unstable; urgency=low
+
+  * new upstream release
+    - add 2.4 to, remove 2.2 freom supported python versions,
+      MySQLdb-Python 1.2.0 doesn't support Python 2.2 any more.
+    - redesign documentation management as upstream ships a lot
+      more docs than in previous releases.
+  * Acknowledge NMU:
+    - rebuild against libmysqlclient12-dev (closes: #299168, #297472)
+
+ -- Jonas Meurer <mejo@debian.org>  Fri, 25 Mar 2005 02:34:01 +0100
+
+python-mysqldb (1.1.6-1.1) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * High-urgency upload for sarge-targetted RC bugfix.
+  * Rebuild against libmysqlclient12-dev instead of libmysqlclient10-dev,
+    for compatibility with newer servers and to avoid segfaults when
+    other mysql-using apache modules are loaded together with mod-python
+    (closes: #299168).
+
+ -- Steve Langasek <vorlon@debian.org>  Fri, 18 Mar 2005 02:47:59 -0800
+
+python-mysqldb (1.1.6-1) unstable; urgency=low
+
+  * new upstream release
+  * dropped patches/01_format_time: included in upstream
+
+ -- Jonas Meurer <mejo@debian.org>  Wed, 29 Sep 2004 19:13:46 +0200
+
+python-mysqldb (1.1.5-2) unstable; urgency=high
+
+  * removed "ssl crypto" compile options to actually build with
+    libmysqlclient10-dev from mysql 3.23.56 (closes: #272839)
+  * still urgency high because of #270555
+
+ -- Jonas Meurer <mejo@debian.org>  Wed, 22 Sep 2004 15:13:15 +0200
+
+python-mysqldb (1.1.5-1) unstable; urgency=high
+
+  * New upstream release
+  * Built with libmysqlclient10-dev (closes: #270555, #270570)
+  * Fixed rules to install maintainer scripts, rm install-stamp at clean
+  * Changed maintainer scripts for pythonPV-mysqldb to static ones
+  * Urgency high to push it into sarge, because of #270555
+
+ -- Jonas Meurer <mejo@debian.org>  Tue, 21 Sep 2004 15:43:26 +0200
+
+python-mysqldb (1.1.4-1) unstable; urgency=low
+
+  * New upstream release
+  * fixed README.Debian, refering to docs in python-mysqldb, as they
+    aren't shipped with the python$PV-mysqldb packages.
+    (closes: #158355)
+
+ -- Jonas Meurer <mejo@debian.org>  Wed, 15 Sep 2004 23:48:19 +0200
+
+python-mysqldb (1.1.3-1) unstable; urgency=low
+
+  * New Upstream Release 1.1.3
+    - Removes support for python2.1 (python2.2 isn't recommented as well)
+    - patch handled by upstream: 02_allow_stringified_timestamps
+      hope that the patch is superseeded, as this would add support for
+      MySQL 4.1 out of the box.
+  * Updated the package descriptions.
+  * cleaned up debian/rules:
+    - Moved exports in rules from build-python* to top
+    - removed quotes at var declarations
+    - changed from dynamical build for every configured python version to a
+      static one, to make build scripts more stable and avoid stupid bugs.
+      hopefully (closes: #270570, #270555)
+    - fixed sed usage, made package lintian clean
+  * fixed sed in postinst to work in woody (closes: #271013)
+  * fixed a small typo in the description of 2.3 package.
+
+ -- Jonas Meurer <mejo@debian.org>  Mon, 13 Sep 2004 10:20:16 +0200
+
+python-mysqldb (1.0.0-1) unstable; urgency=low
+
+  * Overtook package, changed Maintainer field (closes: 255473)
+  * New Upstream Release (closes: #229678)
+  * Accept the NMUs (closes: #205344, #205654, #190655, #158357)
+  * changed build-depends to libmysqlclient-dev, license issues
+    have been resolved, see #242449 for further information.
+  * changed patch system to dpatch
+  * improved debian/rules
+  * some minor changes in maintainer scripts
+  * upgraded standards-version to 3.6.1.1
+  * added upstream changelog
+  * patches/02_allow_stringified_timestamps:
+    - Allow stringified timestamps. This is the default in MySQL 4.1
+    - this patch breaks package install for MySQL < 4.1, therefore
+      still disabled in binary, only build support added (closes: #185462)
+  * added debian/watch file
+
+ -- Jonas Meurer <mejo@debian.org>  Fri, 13 Aug 2004 16:26:59 +0200
+
+python-mysqldb (0.9.2-0.4) unstable; urgency=low
+
+  * NMU
+  * Build for python2.3 as the default python version.
+    Closes: #205344, #205654.
+  * Change section to `python'.
+
+ -- Matthias Klose <doko@debian.org>  Thu, 21 Aug 2003 23:53:29 +0200
+
+python-mysqldb (0.9.2-0.3) unstable; urgency=low
+
+  * Non-maintainer upload
+  * Fix conversion of datetime variables: times over 24 hours were
+    not converted properly. Closes: Bug#190655
+
+ -- Wichert Akkerman <wakkerma@debian.org>  Fri, 25 Apr 2003 00:58:14 +0200
+
+python-mysqldb (0.9.2-0.2) unstable; urgency=low
+
+  * Build python2.3 packages.
+
+ -- Matthias Klose <doko@debian.org>  Sat, 28 Sep 2002 14:14:25 +0200
+
+python-mysqldb (0.9.2-0.1) unstable; urgency=low
+
+  * New upstream version.
+  * Fix download location (closes: #158357).
+
+ -- Matthias Klose <doko@debian.org>  Tue, 27 Aug 2002 09:15:24 +0200
+
+python-mysqldb (0.9.1-3) unstable; urgency=low
+
+  * Make the dependency on python2.1-mysqldb more strict.
+  * Build a package for python2.2 as well.
+
+ -- Gregor Hoffleit <flight@debian.org>  Mon, 31 Dec 2001 13:03:16 +0100
+
+python-mysqldb (0.9.1-2) unstable; urgency=low
+
+  * Fix to postinst (fixes "Can't list
+    /usr/lib/python2.1/site-packages/extension" message).
+
+ -- Gregor Hoffleit <flight@debian.org>  Thu, 27 Dec 2001 12:02:23 +0100
+
+python-mysqldb (0.9.1-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Gregor Hoffleit <flight@debian.org>  Fri, 14 Dec 2001 15:59:48 +0100
+
+python-mysqldb (0.9.0-1.1) unstable; urgency=low
+
+  * NMU to adapt to draft python-policy (default is python2.1).
+  * Add zlib1g-dev to build dependencies (closes: #103913).
+  * Remove old .py[co] files left from old package (closes: #101483).
+
+ -- Matthias Klose <doko@debian.org>  Fri,  2 Nov 2001 00:30:06 +0100
+
+python-mysqldb (0.9.0-1) unstable; urgency=low
+
+  * New upstream version (closes: 101224).
+    - now a true package.
+    - therefore some minor incompatibilities with earlier versions. They
+      won't hurt if you have sticked to the DB API.
+
+  * A FAQ is now included.
+  * examples have been removed (upstream).
+  * README.MySQLmodule is gone.
+
+ -- Gregor Hoffleit <flight@debian.org>  Sun, 17 Jun 2001 23:14:39 +0200
+
+python-mysqldb (0.3.5-2) unstable; urgency=low
+
+  * Correct the dependencies of python2-mysqldb (closes: #92166).
+
+ -- Gregor Hoffleit <flight@debian.org>  Fri, 30 Mar 2001 22:51:56 +0200
+
+python-mysqldb (0.3.5-1) unstable; urgency=high
+
+  * New upstream:
+    - fixes a typographical error which broke 0.3.4 badly
+    - also a fix for a long-standing bug in _mysql which caused it to not
+      work with Python 2.1b2
+  * Added back the documentation (from 0.3.3), which was somehow left out
+    in 0.3.4 and 0.3.5.
+  * Include all docs and examples in python2-mysqldb as well.
+
+ -- Gregor Hoffleit <flight@debian.org>  Thu, 29 Mar 2001 16:32:51 +0200
+
+python-mysqldb (0.3.4-1) unstable; urgency=low
+
+  * New upstream version. 
+  * New python2-mysqldb package, added python2-dev to build-dependencies.
+  * Docs have been removed...
+
+ -- Gregor Hoffleit <flight@debian.org>  Sun, 25 Mar 2001 20:28:34 +0200
+
+python-mysqldb (0.3.3-1) unstable; urgency=low
+
+  * New upstream version.
+  * Added build-dependency on debhelper (closes: #84786).
+  * Cleanups in debian/rules.
+
+ -- Gregor Hoffleit <flight@debian.org>  Sat, 17 Feb 2001 22:44:09 +0100
+
+python-mysqldb (0.3.0-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Gregor Hoffleit <flight@debian.org>  Sat,  2 Dec 2000 11:29:03 +0100
+
+python-mysqldb (0.2.999b2-1) unstable; urgency=low
+
+  * New upstream version (is really 0.3.0b2), closes: #74752.
+  * Recompiled with libmysqlclient10-dev, built with python-distutils.
+  * Include dependency on python-base (closes: #68776).
+  * Author's email address and download location changed in copyright
+    file.
+  * Note that examples/dbtrainer0 is currently broken.
+
+ -- Gregor Hoffleit <flight@debian.org>  Sat, 25 Nov 2000 10:50:34 +0100
+
+python-mysqldb (0.1.1-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Gregor Hoffleit <flight@debian.org>  Wed, 20 Oct 1999 22:23:30 +0200
+
+python-mysqldb (0.1.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Gregor Hoffleit <flight@debian.org>  Wed, 15 Sep 1999 14:07:55 +0200
+

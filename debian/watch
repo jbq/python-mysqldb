@@ -1,0 +1,2 @@
+version=3
+opts="uversionmangle=s/([a-z]\d+)$/~$1/" http://qa.debian.org/watch/sf.php/mysql-python/MySQL-python-(.*)\.tar\.gz debian uupdate

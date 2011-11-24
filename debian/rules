@@ -1,0 +1,62 @@
+#!/usr/bin/make -f
+#-*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# export some vars
+export mysqlversion=5.1
+export mysqlclient=mysqlclient_r
+export mysqloptlibs=ssl crypto
+
+PYVERS=$(shell pyversions -vs)
+
+clean: $(PYVERS:%=clean-python%)
+clean-python%:
+	dh_testdir
+	python$* setup.py clean
+	find . -name "*.py[co]" -exec rm -f {} \;
+	dh_testroot
+	rm -fr build build-python$*
+	dh_clean
+
+build: $(PYVERS:%=build-python%)
+	touch $@
+build-python%:
+	python$*     setup.py build
+	python$*-dbg setup.py build
+	touch $@
+
+install: build $(PYVERS:%=install-python%)
+install-python%:
+	dh_testdir
+	dh_testroot
+	dh_installdirs
+	python$*     setup.py install --install-layout=deb --root $(CURDIR)/debian/python-mysqldb
+	python$*-dbg setup.py install --install-layout=deb --root $(CURDIR)/debian/python-mysqldb-dbg
+
+# Build architecture-independent files here.
+binary-indep: build install
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installchangelogs HISTORY
+	rm -rf debian/python-mysqldb-dbg/usr/share/doc/python-mysqldb-dbg 
+	ln -s python-mysqldb debian/python-mysqldb-dbg/usr/share/doc/python-mysqldb-dbg 
+	dh_link
+	dh_strip -ppython-mysqldb --dbg-package=python-mysqldb-dbg
+	dh_compress
+	dh_fixperms
+	dh_python2
+	dh_makeshlibs
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+	
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install
