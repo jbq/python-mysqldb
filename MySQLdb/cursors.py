@@ -80,6 +80,9 @@ class BaseCursor(object):
             self.errorhandler(self, ProgrammingError, "execute() first")
 
     def _warning_check(self):
+        pass
+
+    def warning_check(self):
         from warnings import warn
         if self._warnings:
             warnings = self._get_db().show_warnings()
