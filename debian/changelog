@@ -1,3 +1,12 @@
+python-mysqldb (1.2.3-1build2) stable; urgency=low
+
+  [ Jean-Baptiste Quenot ]
+  * Disable automatic warning checks
+
+  [ ebuzzing ]
+
+ -- ebuzzing <ebuzzing@ebvm2-jbq>  Tue, 17 Jul 2012 18:14:35 +0200
+
 python-mysqldb (1.2.3-1build1) precise; urgency=low
 
   * Rebuild for libmysqlclient transition
